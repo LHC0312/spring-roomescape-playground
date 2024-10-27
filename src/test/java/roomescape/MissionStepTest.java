@@ -1,5 +1,7 @@
 package roomescape;
 
+import static org.hamcrest.core.Is.is;
+
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,4 +18,5 @@ public class MissionStepTest {
                 .then().log().all()
                 .statusCode(200);
     }
+
 }

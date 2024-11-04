@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.stereotype.Service;
-import roomescape.Enum.ErrorStatus;
 import roomescape.domain.Reservation;
+import roomescape.handler.exception.UserException;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -26,7 +26,7 @@ public class ReservationServiceImpl implements ReservationService {
   public Reservation findById(Integer id) {
     return reservations.stream()
         .filter(reservation -> reservation.getId().equals(id)).findFirst()
-        .orElseThrow(() -> new RuntimeException(ErrorStatus._NOT_FOUND_RESERVATION.name()));
+        .orElseThrow(() -> new UserException("해당되는 예약을 찾을 수 없습니다"));
   }
 
   @Override

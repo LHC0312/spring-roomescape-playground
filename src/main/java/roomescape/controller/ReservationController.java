@@ -1,5 +1,6 @@
 package roomescape.controller;
 
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class ReservationController {
   }
 
   @PostMapping("/reservations")
-  public ResponseEntity<?> createReservation (@RequestBody ReservationReqeustDto.CreateReservationDto request) {
+  public ResponseEntity<?> createReservation (@RequestBody @Valid ReservationReqeustDto.CreateReservationDto request) {
 
     Reservation reservation = ReservationConverter.toReservation(request);
     reservationService.create(reservation);

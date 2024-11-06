@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import roomescape.handler.exception.UserException;;
 
 @ControllerAdvice
-public class ErrorHandler {
+public class
+ErrorHandler {
 
   @ExceptionHandler(UserException.class)
   public ResponseEntity handleException(UserException e) {

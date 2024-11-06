@@ -1,6 +1,8 @@
 package roomescape.converter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,13 +15,14 @@ public class ReservationConverter {
 
   public static ReservationResponseDto.ResponseDto toResponseDto(Reservation reservation) {
 
-    LocalDateTime dateTime = reservation.getDateTime();
+    LocalDate date = reservation.getDate();
+    LocalTime time = reservation.getTime();
 
     return ReservationResponseDto.ResponseDto.builder()
         .id(reservation.getId())
         .name(reservation.getName())
-        .date(dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-        .time(dateTime.format(DateTimeFormatter.ofPattern("HH:mm")))
+        .date(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+        .time(time.format(DateTimeFormatter.ofPattern("HH:mm")))
         .build();
   }
 
@@ -31,12 +34,16 @@ public class ReservationConverter {
 
   public static Reservation toReservation(ReservationReqeustDto.CreateReservationDto request) {
 
-    String string = request.getDate() + " " + request.getTime();
-    LocalDateTime dateTime = LocalDateTime.parse(string, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    String dateString = request.getDate();
+    LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+    String timeString = request.getTime();
+    LocalTime time = LocalTime.parse(timeString, DateTimeFormatter.ofPattern("HH:mm"));
 
     return Reservation.builder()
         .name(request.getName())
-        .dateTime(dateTime)
+        .date(date)
+        .time(time)
         .build();
   }
 

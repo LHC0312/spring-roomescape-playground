@@ -14,7 +14,7 @@ public class ReservationResponseDto {
   @AllArgsConstructor
   public static class ResponseDto {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String date;
     private String time;

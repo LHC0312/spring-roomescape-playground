@@ -1,6 +1,8 @@
 package roomescape.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,11 +11,12 @@ import lombok.Getter;
 @Getter
 public class Reservation {
 
-  private Integer id;
+  private Long id;
   private String name;
-  private LocalDateTime dateTime;
+  private LocalDate date;
+  private LocalTime time;
 
-  public void generateId(Integer id) {
+  public void generateId(Long id) {
     this.id = id;
   }
 }

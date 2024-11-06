@@ -5,8 +5,8 @@ import roomescape.domain.Reservation;
 
 public interface ReservationService {
 
-  Reservation findById(Integer id);
+  Reservation findById(Long id);
   List<Reservation> findAll();
   Reservation create(final Reservation reservation);
-  Reservation delete(final Integer id);
+  Reservation delete(final Long id);
 }

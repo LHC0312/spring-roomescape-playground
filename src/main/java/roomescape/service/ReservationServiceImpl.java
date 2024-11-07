@@ -2,14 +2,11 @@ package roomescape.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import roomescape.dao.ReservationDao;
 import roomescape.domain.Reservation;
-import roomescape.handler.exception.UserException;
+import roomescape.handler.exception.ReservationException;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +26,7 @@ public class ReservationServiceImpl implements ReservationService {
   public Reservation findById(Long id) {
 
     return reservationDao.findById(id)
-        .orElseThrow(() -> new UserException("해당되는 예약을 찾을 수 없습니다"));
+        .orElseThrow(() -> new ReservationException("해당되는 예약을 찾을 수 없습니다"));
 
   }
 

@@ -13,8 +13,8 @@ public class Reservation {
 
   private Long id;
   private String name;
-  private LocalDate date;
-  private LocalTime time;
+  private String date;
+  private Time time;
 
   public void generateId(Long id) {
     this.id = id;

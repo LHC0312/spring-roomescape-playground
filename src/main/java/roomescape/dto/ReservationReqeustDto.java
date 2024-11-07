@@ -1,6 +1,7 @@
 package roomescape.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 
@@ -15,8 +16,8 @@ public class ReservationReqeustDto {
     @NotBlank
     private String date;
 
-    @NotBlank
-    private String time;
+    @NotNull
+    private Long time;
   }
 }
 

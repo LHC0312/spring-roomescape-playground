@@ -1,45 +1,52 @@
 package roomescape.dao;
 
 import java.sql.PreparedStatement;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import roomescape.domain.Reservation;
+import roomescape.domain.Time;
+import roomescape.service.TimeService;
+import roomescape.service.TimeServiceImpl;
 
 @Repository
+@RequiredArgsConstructor
 public class ReservationDao {
 
   private final JdbcTemplate jdbcTemplate;
 
   private final RowMapper<Reservation> rowMapper = (resultSet, rowNum) -> {
 
-
     return Reservation.builder()
-        .id(resultSet.getLong("id"))
-        .name(resultSet.getString("name"))
-        .date(resultSet.getDate("date").toLocalDate())
-        .time(resultSet.getTime("time").toLocalTime())
+        .id(resultSet.getLong("r.id"))
+        .name(resultSet.getString("r.name"))
+        .date(resultSet.getString("r.date"))
+        .time(
+            Time.builder()
+                .id(resultSet.getLong("t.id"))
+                .time(resultSet.getString("t.time"))
+                .build()
+        )
         .build();
   };
 
-  public ReservationDao(JdbcTemplate jdbcTemplate) {
-    this.jdbcTemplate = jdbcTemplate;
-  }
 
   public Optional<Reservation> findById(Long id) {
     return jdbcTemplate.query(
-        "select id, name, date, time from reservation where id = ?", rowMapper, id
+        "SELECT r.id, r.name, r.date, t.id, t.time FROM reservation AS r JOIN time AS t ON (r.time_id = t.id AND r.id = ?)", rowMapper, id
     ).stream().findFirst();
   }
 
   public List<Reservation> findAll() {
     return jdbcTemplate.query(
-        "select id, name, date, time from reservation", rowMapper
+        "SELECT r.id, r.name, r.date, t.id, t.time FROM reservation AS r JOIN time AS t ON r.time_id = t.id", rowMapper
     );
   }
 
@@ -48,12 +55,12 @@ public class ReservationDao {
 
     jdbcTemplate.update(connection -> {
           PreparedStatement ps = connection.prepareStatement(
-              "INSERT INTO reservation (name, date, time) values (?, ?, ?)",
+              "INSERT INTO reservation (name, date, time_id) values (?, ?, ?)",
               new String[]{"id"}
           );
           ps.setString(1, reservation.getName());
-          ps.setString(2, reservation.getDate().toString());
-          ps.setString(3, reservation.getTime().toString());
+          ps.setString(2, reservation.getDate());
+          ps.setLong(3, reservation.getTime().getId());
           return ps;
         }, keyHolder);
     Long id = keyHolder.getKey().longValue();
@@ -64,7 +71,7 @@ public class ReservationDao {
 
   public void remove(Reservation reservation) {
     jdbcTemplate.update(
-        "delete from reservation where id = ?", reservation.getId()
+        "DELETE FROM reservation WHERE id = ?", reservation.getId()
     );
   }
 

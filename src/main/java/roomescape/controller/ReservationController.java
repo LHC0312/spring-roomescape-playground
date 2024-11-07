@@ -28,7 +28,7 @@ public class ReservationController {
 
   @GetMapping("/reservation")
   public String reservation() {
-    return "home";
+    return "new-reservation";
   }
 
   @GetMapping("/reservations")
@@ -40,8 +40,7 @@ public class ReservationController {
   @PostMapping("/reservations")
   public ResponseEntity<?> createReservation (@RequestBody @Valid ReservationReqeustDto.CreateReservationDto request) {
 
-    Reservation reservation = ReservationConverter.toReservation(request);
-    reservationService.create(reservation);
+    Reservation reservation = reservationService.create(request);
 
     String url = "/reservations/" + reservation.getId();
 

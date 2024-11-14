@@ -1,7 +1,10 @@
 package roomescape.handler.exception;
 
-public class TimeException extends RuntimeException {
-  public TimeException(String message) {
-    super(message);
+import roomescape.handler.ErrorReasonDto;
+import roomescape.handler.ErrorStatus;
+
+public class TimeException extends BaseException {
+  public TimeException(ErrorStatus errorStatus) {
+    super(errorStatus);
   }
 }

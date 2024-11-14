@@ -1,7 +1,10 @@
 package roomescape.handler.exception;
 
-public class ReservationException extends RuntimeException {
-  public ReservationException(String message) {
-    super(message);
+import roomescape.handler.ErrorReasonDto;
+import roomescape.handler.ErrorStatus;
+
+public class ReservationException extends BaseException {
+  public ReservationException(ErrorStatus errorStatus) {
+    super(errorStatus);
   }
 }

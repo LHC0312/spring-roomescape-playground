@@ -25,13 +25,13 @@ public class ReservationDao {
   private final RowMapper<Reservation> rowMapper = (resultSet, rowNum) -> {
 
     return Reservation.builder()
-        .id(resultSet.getLong("r.id"))
-        .name(resultSet.getString("r.name"))
-        .date(resultSet.getString("r.date"))
+        .id(resultSet.getLong("reservation_id"))
+        .name(resultSet.getString("name"))
+        .date(resultSet.getString("date"))
         .time(
             Time.builder()
-                .id(resultSet.getLong("t.id"))
-                .time(resultSet.getString("t.time"))
+                .id(resultSet.getLong("time_id"))
+                .time(resultSet.getString("time"))
                 .build()
         )
         .build();
@@ -40,13 +40,13 @@ public class ReservationDao {
 
   public Optional<Reservation> findById(Long id) {
     return jdbcTemplate.query(
-        "SELECT r.id, r.name, r.date, t.id, t.time FROM reservation AS r JOIN time AS t ON (r.time_id = t.id AND r.id = ?)", rowMapper, id
+        "SELECT r.id AS reservation_id, r.name, r.date, t.id AS time_id, t.time FROM reservation AS r JOIN time AS t ON (r.time_id = t.id AND r.id = ?)", rowMapper, id
     ).stream().findFirst();
   }
 
   public List<Reservation> findAll() {
     return jdbcTemplate.query(
-        "SELECT r.id, r.name, r.date, t.id, t.time FROM reservation AS r JOIN time AS t ON r.time_id = t.id", rowMapper
+        "SELECT r.id AS reservation_id, r.name, r.date, t.id AS time_id, t.time FROM reservation AS r JOIN time AS t ON r.time_id = t.id", rowMapper
     );
   }
 
@@ -74,5 +74,4 @@ public class ReservationDao {
         "DELETE FROM reservation WHERE id = ?", reservation.getId()
     );
   }
-
 }
